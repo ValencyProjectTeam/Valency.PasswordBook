@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="using:System"
+        xmlns:vm="clr-namespace:Valency.PasswordBook.Hybrid.ViewModels"
+        mc:Ignorable="d" Width="450" Height="800"
+        x:Class="Valency.PasswordBook.Hybrid.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Valency.PasswordBook.Hybrid"
+        >
+    <DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File"></MenuItem>
+            <MenuItem Header="_CreateItem" Command="{Binding CreateNewCommand}"></MenuItem>
+            <MenuItem Header="_RemoveAll" Command="{Binding RemoveAllCommand}"></MenuItem>
+            <MenuItem Header="_Settings"></MenuItem>
+        </Menu>
+			<ListBox Name="MainListBox" ItemsSource="{Binding Passwords}"
+            DoubleTapped="MainListBox_DoubleTapped">
+    <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="x:String">
+            <Border Name="MyItemContainer" Background="Transparent" HorizontalAlignment="Stretch">
+                <TextBlock Text="{Binding}" Padding="5"/>
+
+                <Border.ContextMenu>
+                    <ContextMenu x:DataType="vm:MainWindowViewModel">
+                        
+                        <MenuItem Header="Edit" 
+                                  Command="{Binding #MainListBox.DataContext.EditCommand}" 
+                                  CommandParameter="{Binding #MyItemContainer.DataContext}"/>
+                        
+                        <MenuItem Header="Copy" 
+                                  Command="{Binding #MainListBox.DataContext.CopyCommand}" 
+                                  CommandParameter="{Binding #MyItemContainer.DataContext}"/>
+                        
+                        <Separator />
+                        
+                        <MenuItem Header="Delete" 
+                                  Foreground="Red"
+                                  Command="{Binding #MainListBox.DataContext.DeleteCommand}" 
+                                  CommandParameter="{Binding #MyItemContainer.DataContext}"/>
+                    </ContextMenu>
+                </Border.ContextMenu>
+            </Border>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>
+    </DockPanel>
+</Window>
